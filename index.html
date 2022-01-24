@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Javascript based Calculator</p>
+<p>Welcome to a dynamic calculator in Javascript</p>
+
+<p>Please enter the first number</p><input id="a" type="number" class="number1">
+<p>Please enter the second number</p><input id="b" type="number" class="number2">
+
+<p>Please shoose from one of the following operations: Addition, Subtraction, Multiplication, Division</p>
+<select id="operation" class="operation" name="operation">
+    <option value="Addition">Addition</option>
+    <option value="Subtraction">Subtraction</option>
+    <option value="Multiplication">Multiplication</option>
+    <option value="Division">Division</option>
+</select>
+
+<button onclick="Calculate()">Submit</button>
+
+<div class="error">
+
+</div>
+<div class="success">
+
+</div>
+
+<p id="result"></p>
+
+
+
+<script>
+    $(".number1").keyup(function() {
+        number = $("#a").val();
+        NUMBER_VALIDATION = /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/;
+        $(".success").html(number);
+        if (NUMBER_VALIDATION.test(number) == true) {
+          $(".error").html("Input is Valid");
+        } else {
+          $(".error").html("Please enter valid input");
+        }
+      });
+
+    $(".number2").keyup(function() {
+        number = $("#b").val();
+        NUMBER_VALIDATION = /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/;
+        $(".success").html(number);
+        if (NUMBER_VALIDATION.test(number) == true) {
+          $(".error").html("Input is Valid");
+        } else {
+          $(".error").html("Please enter valid input");
+        }
+      });
+
+function Calculate() {
+  var output;
+  var a = document.getElementById("a").value;
+  var b = document.getElementById("b").value;
+  var operation = document.getElementById("operation").value;
+
+  switch(operation) {
+    case "Addition":
+        output = +a + +b;
+        break;
+    case "Subtraction":
+        output = +a - +b;
+        break;
+    case "Multiplication":
+        output = +a * +b;
+        break;
+    case "Division":
+        output = +a / +b;
+        break;
+    default:
+        output = "Please enter the proper operation to perform";
+  }
+  document.getElementById("result").innerHTML = output;
+}
+</script>
+
+</body>
+</html>
