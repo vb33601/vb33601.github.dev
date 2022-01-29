@@ -2,11 +2,22 @@
 <html>
 <body>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
 <p>Javascript based Calculator</p>
 <p>Welcome to a dynamic calculator in Javascript</p>
 
 <p>Please enter the first number</p><input id="a" type="number" class="number1">
 <p>Please enter the second number</p><input id="b" type="number" class="number2">
+<div id="selectNumber">
+<p>Please enter the third number</p><input id="next" type="number" class="next" name="next[]">
+<button onclick="cloneNumber()">Add another Number</button>
+</div>
 
 <p>Please shoose from one of the following operations: Addition, Subtraction, Multiplication, Division</p>
 <select id="operation" class="operation" name="operation">
@@ -16,7 +27,9 @@
     <option value="Division">Division</option>
 </select>
 
-<button onclick="Calculate()">Submit</button>
+<button onclick="Calculate()">Calculate for First two numbers</button>
+<button onclick="CalculateAll()">Calculate for all numbers</button>
+
 
 <div class="error">
 
@@ -27,7 +40,7 @@
 
 <p id="result"></p>
 
-
+<p id="par"></p>
 
 <script>
     $(".number1").keyup(function() {
@@ -52,10 +65,33 @@
         }
       });
 
+    $(".next").keyup(function() {
+        number = $("#next").val();
+        NUMBER_VALIDATION = /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/;
+        $(".success").html(number);
+        if (NUMBER_VALIDATION.test(number) == true) {
+          $(".error").html("Input is Valid");
+        } else {
+          $(".error").html("Please enter valid input");
+        }
+      });
+
+var numberCounter = 0
+function cloneNumber() {
+  var num = document.getElementById("next")
+  var clone = num.cloneNode(true)
+  var attr = num.getAttribute("attr") + numberCounter++
+  clone.id = attr
+  clone.setAttribute("attr", attr)
+  document.getElementById("selectNumber").appendChild(clone)
+}
+      
+
 function Calculate() {
   var output;
   var a = document.getElementById("a").value;
   var b = document.getElementById("b").value;
+
   var operation = document.getElementById("operation").value;
 
   switch(operation) {
@@ -74,8 +110,53 @@ function Calculate() {
     default:
         output = "Please enter the proper operation to perform";
   }
+  
   document.getElementById("result").innerHTML = output;
 }
+
+
+function CalculateAll() {
+
+  var input = document.getElementsByName('next[]');
+  var a = parseFloat(document.getElementById("a").value);
+  var b = parseFloat(document.getElementById("b").value);
+  var newsum = +a + +b;
+  var newdiv = +a / +b;
+  var newmult = +a * +b;
+  var newsub = +a - +b;
+  var arr = [];
+  var operation = document.getElementById("operation").value;
+  
+  for (var i = 0; i < input.length; i++) {
+    var a = input[i];
+
+    arr[i]=input[i];
+
+    newsum += parseFloat(a.value);
+    newsub -= parseFloat(a.value);
+    newmult *= parseFloat(a.value);
+    newdiv /= parseFloat(a.value);
+    }
+    
+    switch(operation) {
+      case "Addition":
+          document.getElementById("par").innerHTML = newsum;
+          break;
+      case "Subtraction":
+          document.getElementById("par").innerHTML = newsub;
+          break;
+      case "Multiplication":
+          document.getElementById("par").innerHTML = newmult;
+          break;
+      case "Division":
+          document.getElementById("par").innerHTML = newdiv;
+          break;
+      default:
+          output = "Please enter the proper operation to perform";
+    }
+
+}
+
 </script>
 
 </body>
